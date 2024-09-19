@@ -1,4 +1,4 @@
-# Weather Forecast App
+# TruongThoWeather
 
 A Flutter-based weather forecast application that provides real-time weather updates, including current conditions and forecasts for upcoming days. The app uses OpenWeather API to fetch data and supports location search with Google Places API. It features a responsive and user-friendly interface, including dynamic weather icons and smooth transitions.
 
@@ -11,11 +11,10 @@ A Flutter-based weather forecast application that provides real-time weather upd
 
 ## Screenshots
 
-### Home View
-![Home View Screenshot](screenshot_home.png)
-
-### Forecast Report View
-![Forecast Report Screenshot](screenshot_forecast.png)
+<div style="display: flex; justify-content: space-around;">
+  <img src="screenshot_home.png" alt="Home View Screenshot" width="350">
+  <img src="screenshot_forecast.png" alt="Forecast Report Screenshot" width="350">
+</div>
 
 ## Technologies Used
 
@@ -74,14 +73,3 @@ A Flutter-based weather forecast application that provides real-time weather upd
 - On launch, the app will display the current weather and forecast for your location.
 - Use the search bar to find the weather for different locations.
 - Scroll horizontally to view the hourly forecast and vertically for the next few days’ forecast.
-
-## Project Structure
-
-```bash
-lib/
-|-- services/              # Handles API requests
-|-- ui/                    # Contains all UI code
-|   |-- views/             # Home view and forecast report view
-|   |-- widgets/           # Reusable UI components
-|-- viewmodels/            # View models for managing app state
-|-- utils/                 # Utility functions such as weather icon mapping
