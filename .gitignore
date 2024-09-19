@@ -69,10 +69,10 @@ Thumbs.db
 *.mocks.dart
 *.gen.dart
 
-build/
 Podfile.lock
-.flutter-plugins
 Pods/
 
 # ignore: fastlane auto generated files
 .bundle
+
+lib/constant/api_constants.dart
