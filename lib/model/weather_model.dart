@@ -88,3 +88,18 @@ class WeatherData with _$WeatherData {
   factory WeatherData.fromJson(Map<String, dynamic> json) =>
       _$WeatherDataFromJson(json);
 }
+
+@freezed
+class HourlyData with _$HourlyData {
+  const factory HourlyData({
+    required List<String> time,
+    required List<double> temperature2m,
+    required List<int> weatherCode,
+  }) = _HourlyData;
+
+  factory HourlyData.fromJson(Map<String, dynamic> json) => HourlyData(
+        time: List<String>.from(json['time']),
+        temperature2m: List<double>.from(json['temperature_2m']),
+        weatherCode: List<int>.from(json['weather_code']),
+      );
+}

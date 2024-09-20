@@ -100,17 +100,15 @@ class ForecastReportView extends StackedView<ForecastReportViewModel> {
                       height: MediaQuery.sizeOf(context).height * 0.172,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
-                        itemCount: viewModel.weatherData?.hourly.length ?? 0,
+                        itemCount: viewModel.hourlyData?.time.length ?? 0,
                         itemBuilder: (context, index) {
-                          final hourly = viewModel.weatherData?.hourly[index];
-
                           return SizedBox(
                             width: 100,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  '${hourly?.temp.toInt() ?? 0}°C',
+                                  '${viewModel.hourlyData?.temperature2m[index].toInt() ?? 0}°C',
                                   style: const TextStyle(
                                     fontSize: 20,
                                     color: Colors.white,
@@ -118,14 +116,15 @@ class ForecastReportView extends StackedView<ForecastReportViewModel> {
                                 ),
                                 const SizedBox(height: 23),
                                 Icon(
-                                  hourly?.weather.first.id.getWeatherIcon(),
+                                  viewModel.hourlyData?.weatherCode[index].getWeatherIcon(),
                                   color: Colors.white,
                                   fill: 1,
                                   size: 30,
                                 ),
                                 const SizedBox(height: 23),
                                 Text(
-                                  viewModel.formatTimeFromDt(hourly?.dt ?? 0),
+                                  viewModel.formatTimeFromString(
+                                      viewModel.hourlyData?.time[index] ?? ''),
                                   style: const TextStyle(
                                     fontSize: 16,
                                     color: Colors.white,

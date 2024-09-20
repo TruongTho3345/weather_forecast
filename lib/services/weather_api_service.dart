@@ -18,3 +18,23 @@ class WeatherApiService {
     }
   }
 }
+
+class HourlyForecastService {
+  Future<HourlyData> fetchHourlyForecast(double lat, double lon) async {
+    final url = Uri.parse(
+        'https://api.open-meteo.com/v1/forecast?latitude=$lat&longitude=$lon&hourly=temperature_2m,weather_code&timezone=auto&forecast_days=1');
+
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final jsonResponse = json.decode(response.body);
+      if (jsonResponse['hourly'] != null) {
+        return HourlyData.fromJson(jsonResponse['hourly']);
+      } else {
+        throw Exception('Hourly data is null');
+      }
+    } else {
+      throw Exception('Failed to load hourly data');
+    }
+  }
+}
