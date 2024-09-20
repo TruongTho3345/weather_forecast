@@ -1,6 +1,6 @@
 # TruongThoWeather
 
-A Flutter-based weather forecast application that provides real-time weather updates, including current conditions and forecasts for upcoming days. The app uses OpenWeather API to fetch data and supports location search with Google Places API. It features a responsive and user-friendly interface, including dynamic weather icons and smooth transitions.
+A Flutter-based weather forecast application that provides real-time weather updates, including current conditions and forecasts for upcoming days. The app uses OpenWeather API to fetch data and supports location search with OpenCage Geocoding API. It features a responsive and user-friendly interface, including dynamic weather icons and smooth transitions.
 
 ## Features
 
