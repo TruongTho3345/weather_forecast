@@ -17,11 +17,7 @@ class LocationService {
       final results = data['results'] as List<dynamic>;
 
       return results
-          .map((result) => LocationModel(
-                formatted: result['formatted'],
-                lat: result['geometry']['lat'],
-                lng: result['geometry']['lng'],
-              ))
+          .map((result) => LocationModel.fromJson(result))
           .toList();
     } else {
       throw Exception('Failed to load location data');
