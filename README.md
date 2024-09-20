@@ -53,7 +53,7 @@ A Flutter-based weather forecast application that provides real-time weather upd
     flutter pub run build_runner build --delete-conflicting-outputs 
     ```
 
-4. Navigate to a `lib/constant/api_constants.dart` file and add your API keys for OpenWeather and Google Places API. For example:
+4. Navigate to a `lib/constant/api_constants.dart` file and add your API keys for OpenWeather and OpenCage Geocoding API. For example:
 
     ```
     class ApiConstants {
