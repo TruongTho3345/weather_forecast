@@ -2,12 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:stacked/stacked.dart';
 import 'package:weather_forecast/model/location_model.dart';
 import 'package:weather_forecast/model/weather_model.dart';
-import 'package:weather_forecast/repository/location_repository.dart';
-import 'package:weather_forecast/repository/weather_repository.dart';
+import 'package:weather_forecast/services/location_service.dart';
+import 'package:weather_forecast/services/weather_api_service.dart';
 
 class HomeViewModel extends BaseViewModel {
-  final WeatherRepository _weatherRepository = WeatherRepository();
-  final LocationRepository _locationRepository = LocationRepository();
+  final WeatherApiService _weatherService = WeatherApiService();
+  final LocationService _locationService = LocationService();
 
   WeatherData? _weatherData;
 
@@ -25,13 +25,13 @@ class HomeViewModel extends BaseViewModel {
     setBusy(true);
     try {
       if (selectedLocation == null) {
-        final currentPosition = await _locationRepository.getCurrentPosition();
-        _weatherData = await _weatherRepository.getWeatherData(
+        final currentPosition = await _locationService.getCurrentPosition();
+        _weatherData = await _weatherService.getWeatherData(
           currentPosition.latitude,
           currentPosition.longitude,
         );
       } else {
-        _weatherData = await _weatherRepository.getWeatherData(
+        _weatherData = await _weatherService.getWeatherData(
           selectedLocation!.geometry.lat,
           selectedLocation!.geometry.lng,
         );
@@ -49,7 +49,7 @@ class HomeViewModel extends BaseViewModel {
     setBusy(true);
     try {
       List<LocationModel> locations =
-          await _locationRepository.searchLocation(locationName);
+          await _locationService.searchLocation(locationName);
       if (locations.isNotEmpty) {
         selectedLocation = locations.first;
         this.locationName = selectedLocation!.formatted;

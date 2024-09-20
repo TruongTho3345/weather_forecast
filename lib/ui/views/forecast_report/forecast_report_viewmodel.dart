@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 import 'package:weather_forecast/model/weather_model.dart';
-import 'package:weather_forecast/repository/weather_repository.dart';
+import 'package:weather_forecast/services/weather_api_service.dart';
 
 class ForecastReportViewModel extends BaseViewModel {
-  final WeatherRepository _weatherRepository = WeatherRepository();
-  final HourlyRepository _hourlyRepository = HourlyRepository();
+  final WeatherApiService _weatherService = WeatherApiService();
+  final HourlyForecastService _hourlyService = HourlyForecastService();
 
   WeatherData? _weatherData;
 
@@ -27,7 +27,7 @@ class ForecastReportViewModel extends BaseViewModel {
   Future<void> fetchDailyForecast(double lat, double lon) async {
     setBusy(true);
     try {
-      _weatherData = await _weatherRepository.getWeatherData(lat, lon);
+      _weatherData = await _weatherService.getWeatherData(lat, lon);
     } catch (e) {
       debugPrint('Error fetching daily forecast: $e');
     }
@@ -38,7 +38,7 @@ class ForecastReportViewModel extends BaseViewModel {
   Future<void> fetchHourlyForecast(double lat, double lon) async {
     setBusy(true);
     try {
-      _hourlyData = await _hourlyRepository.getHourlyData(lat, lon);
+      _hourlyData = await _hourlyService.getHourlyData(lat, lon);
     } catch (e) {
       debugPrint('Error fetching hourly forecast: $e');
     }

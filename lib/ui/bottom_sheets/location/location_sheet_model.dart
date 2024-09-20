@@ -9,7 +9,7 @@ class LocationSheetModel extends BaseViewModel {
 
   Future<void> searchLocation(String query) async {
     setBusy(true);
-    final results = await _locationService.getLocationCoordinates(query);
+    final results = await _locationService.searchLocation(query);
     _suggestions = results.map((loc) => loc.formatted).toList();
     setBusy(false);
     notifyListeners();
