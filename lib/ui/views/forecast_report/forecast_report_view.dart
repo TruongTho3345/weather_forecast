@@ -102,36 +102,61 @@ class ForecastReportView extends StackedView<ForecastReportViewModel> {
                         scrollDirection: Axis.horizontal,
                         itemCount: viewModel.hourlyData?.time.length ?? 0,
                         itemBuilder: (context, index) {
-                          return SizedBox(
-                            width: 100,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  '${viewModel.hourlyData?.temperature2m[index].toInt() ?? 0}°C',
-                                  style: const TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.white,
+                          DateTime forecastTime = DateTime.parse(
+                              viewModel.hourlyData?.time[index] ?? '');
+
+                          int forecastHour = forecastTime.hour;
+                          int currentHour = DateTime.now().hour;
+
+                          bool isCurrentHour = forecastHour == currentHour;
+
+                          return Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 2.0),
+                            child: Container(
+                              width: 100,
+                              decoration: BoxDecoration(
+                                color: isCurrentHour
+                                    ? Colors.white.withOpacity(0.2)
+                                    : Colors.transparent,
+                                border: Border.all(
+                                  color: isCurrentHour
+                                      ? Colors.white
+                                      : Colors.transparent,
+                                  width: 2,
+                                ),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    '${viewModel.hourlyData?.temperature2m[index].toInt() ?? 0}°C',
+                                    style: const TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.white,
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(height: 23),
-                                Icon(
-                                  viewModel.hourlyData?.weatherCode[index]
-                                      .getWeatherIcon(),
-                                  color: Colors.white,
-                                  fill: 1,
-                                  size: 30,
-                                ),
-                                const SizedBox(height: 23),
-                                Text(
-                                  viewModel.formatTimeFromString(
-                                      viewModel.hourlyData?.time[index] ?? ''),
-                                  style: const TextStyle(
-                                    fontSize: 16,
+                                  const SizedBox(height: 23),
+                                  Icon(
+                                    viewModel.hourlyData?.weatherCode[index]
+                                        .getWeatherIcon(),
                                     color: Colors.white,
+                                    fill: 1,
+                                    size: 30,
                                   ),
-                                ),
-                              ],
+                                  const SizedBox(height: 23),
+                                  Text(
+                                    viewModel.formatTimeFromString(
+                                        viewModel.hourlyData?.time[index] ??
+                                            ''),
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           );
                         },
