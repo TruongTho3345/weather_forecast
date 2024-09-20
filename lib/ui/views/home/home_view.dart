@@ -228,10 +228,12 @@ class HomeView extends StackedView<HomeViewModel> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => ForecastReportView(
-                                latitude: viewModel.selectedLocation?.lat ??
-                                    viewModel.defaultLat,
-                                longitude: viewModel.selectedLocation?.lng ??
-                                    viewModel.defaultLng,
+                                latitude:
+                                    viewModel.selectedLocation?.geometry.lat ??
+                                        viewModel.defaultLat,
+                                longitude:
+                                    viewModel.selectedLocation?.geometry.lng ??
+                                        viewModel.defaultLng,
                               ),
                             ),
                           );

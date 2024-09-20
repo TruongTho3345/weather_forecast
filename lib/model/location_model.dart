@@ -8,10 +8,20 @@ part 'location_model.g.dart';
 class LocationModel with _$LocationModel {
   const factory LocationModel({
     required String formatted,
-    required double lat,
-    required double lng,
+    required Geometry geometry,
   }) = _LocationModel;
 
   factory LocationModel.fromJson(Map<String, dynamic> json) =>
       _$LocationModelFromJson(json);
+}
+
+@freezed
+class Geometry with _$Geometry {
+  const factory Geometry({
+    required double lat,
+    required double lng,
+  }) = _Geometry;
+
+  factory Geometry.fromJson(Map<String, dynamic> json) =>
+      _$GeometryFromJson(json);
 }

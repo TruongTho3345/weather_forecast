@@ -32,8 +32,8 @@ class HomeViewModel extends BaseViewModel {
         );
       } else {
         _weatherData = await _weatherRepository.getWeatherData(
-          selectedLocation!.lat,
-          selectedLocation!.lng,
+          selectedLocation!.geometry.lat,
+          selectedLocation!.geometry.lng,
         );
       }
       errorMessage = null;
@@ -44,7 +44,6 @@ class HomeViewModel extends BaseViewModel {
     setBusy(false);
     notifyListeners();
   }
-
 
   Future<void> updateLocationAndFetchWeather(String locationName) async {
     setBusy(true);
@@ -64,5 +63,4 @@ class HomeViewModel extends BaseViewModel {
     setBusy(false);
     notifyListeners();
   }
-
 }
