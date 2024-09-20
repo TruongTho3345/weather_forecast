@@ -116,7 +116,8 @@ class ForecastReportView extends StackedView<ForecastReportViewModel> {
                                 ),
                                 const SizedBox(height: 23),
                                 Icon(
-                                  viewModel.hourlyData?.weatherCode[index].getWeatherIcon(),
+                                  viewModel.hourlyData?.weatherCode[index]
+                                      .getWeatherIcon(),
                                   color: Colors.white,
                                   fill: 1,
                                   size: 30,
@@ -168,9 +169,11 @@ class ForecastReportView extends StackedView<ForecastReportViewModel> {
                           height: MediaQuery.sizeOf(context).height * 0.35,
                           child: ListView.builder(
                             padding: const EdgeInsets.all(0.0),
-                            itemCount: viewModel.weatherData?.daily.length ?? 0,
+                            itemCount:
+                                (viewModel.weatherData?.daily.length ?? 1) - 1,
                             itemBuilder: (context, index) {
-                              final daily = viewModel.weatherData?.daily[index];
+                              final daily =
+                                  viewModel.weatherData?.daily[index + 1];
                               return SizedBox(
                                 height: 60,
                                 child: Row(
