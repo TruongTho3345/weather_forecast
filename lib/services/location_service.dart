@@ -45,12 +45,12 @@ class LocationService {
 
     LocationSettings locationSettings = const LocationSettings(
       accuracy: LocationAccuracy.high,
-      distanceFilter: 10, // Minimum distance a device must move before an update
+      distanceFilter:
+          10, // Minimum distance a device must move before an update
     );
 
     return await Geolocator.getCurrentPosition(
       locationSettings: locationSettings,
     );
   }
-
 }

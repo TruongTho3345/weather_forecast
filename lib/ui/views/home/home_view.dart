@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stacked/stacked_annotations.dart';
+import 'package:stacked_services/stacked_services.dart';
 import 'package:weather_forecast/gen/assets.gen.dart';
 import 'package:weather_forecast/utils/symbols_utils.dart';
 import 'package:weather_forecast/ui/common/ui_helpers.dart';
-import 'package:weather_forecast/ui/bottom_sheets/location_bottom_sheet.dart';
 import 'package:weather_forecast/ui/views/forecast_report/forecast_report_view.dart';
 import 'home_viewmodel.dart';
 
@@ -47,15 +48,20 @@ class HomeView extends StackedView<HomeViewModel> {
                       const SizedBox(height: 20),
                       GestureDetector(
                         onTap: () async {
-                          final selectedLocation =
-                              await showModalBottomSheet<String>(
-                            context: context,
-                            builder: (context) => const LocationBottomSheet(),
+                          final bottomSheetService =
+                              StackedLocator.instance<BottomSheetService>();
+
+                          final response =
+                              await bottomSheetService.showCustomSheet(
+                            variant: 'locationSheet',
+                            title: 'Select Location',
+                            description:
+                                'Choose a location for weather updates',
                           );
 
-                          if (selectedLocation != null) {
-                            viewModel.updateLocationAndFetchWeather(
-                                selectedLocation);
+                          if (response != null && response.confirmed) {
+                            viewModel
+                                .updateLocationAndFetchWeather(response.data);
                           }
                         },
                         child: Row(
@@ -124,87 +130,93 @@ class HomeView extends StackedView<HomeViewModel> {
                               ),
                             ),
                             if (viewModel.weatherData != null)
-                            Text(
-                              "${viewModel.weatherData!.current.temp.toInt()}°",
-                              style: const TextStyle(
-                                fontSize: 80,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
+                              Text(
+                                "${viewModel.weatherData!.current.temp.toInt()}°",
+                                style: const TextStyle(
+                                  fontSize: 80,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
                               ),
-                            ),
                             if (viewModel.weatherData != null)
-                            Text(
-                              viewModel.weatherData!.current.weather[0].main,
-                              style: const TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
+                              Text(
+                                viewModel.weatherData!.current.weather[0].main,
+                                style: const TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
                               ),
-                            ),
                             const SizedBox(
                               height: 30,
                             ),
                             // Wind and Humidity
                             if (viewModel.weatherData != null)
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    SvgPicture.asset(Assets.icWind),
-                                    const SizedBox(height: 16),
-                                    SvgPicture.asset(Assets.icHumidity),
-                                  ],
-                                ),
-                                const SizedBox(width: 19),
-                                const Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text("Wind",
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 16)),
-                                    SizedBox(height: 19),
-                                    Text("Humidity",
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 16)),
-                                  ],
-                                ),
-                                const SizedBox(width: 19),
-                                const Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text("|",
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 12)),
-                                    SizedBox(height: 24),
-                                    Text("|",
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 12)),
-                                  ],
-                                ),
-                                const SizedBox(width: 19),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "${(viewModel.weatherData!.current.windSpeed * 3.6).toInt()} km/h",
-                                      style: const TextStyle(
-                                          color: Colors.white, fontSize: 16),
-                                    ),
-                                    const SizedBox(height: 19),
-                                    Text(
-                                      "${viewModel.weatherData!.current.humidity}%",
-                                      style: const TextStyle(
-                                          color: Colors.white, fontSize: 16),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      SvgPicture.asset(Assets.icWind),
+                                      const SizedBox(height: 16),
+                                      SvgPicture.asset(Assets.icHumidity),
+                                    ],
+                                  ),
+                                  const SizedBox(width: 19),
+                                  const Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text("Wind",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16)),
+                                      SizedBox(height: 19),
+                                      Text("Humidity",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16)),
+                                    ],
+                                  ),
+                                  const SizedBox(width: 19),
+                                  const Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text("|",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 12)),
+                                      SizedBox(height: 24),
+                                      Text("|",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 12)),
+                                    ],
+                                  ),
+                                  const SizedBox(width: 19),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "${(viewModel.weatherData!.current.windSpeed * 3.6).toInt()} km/h",
+                                        style: const TextStyle(
+                                            color: Colors.white, fontSize: 16),
+                                      ),
+                                      const SizedBox(height: 19),
+                                      Text(
+                                        "${viewModel.weatherData!.current.humidity}%",
+                                        style: const TextStyle(
+                                            color: Colors.white, fontSize: 16),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                           ],
                         ),
                       ),
