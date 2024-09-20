@@ -9,7 +9,9 @@ class ForecastReportView extends StackedView<ForecastReportViewModel> {
   final double latitude;
   final double longitude;
 
-  const ForecastReportView({
+  final ScrollController _scrollController = ScrollController();
+
+  ForecastReportView({
     Key? key,
     required this.latitude,
     required this.longitude,
@@ -17,8 +19,38 @@ class ForecastReportView extends StackedView<ForecastReportViewModel> {
 
   @override
   void onViewModelReady(ForecastReportViewModel viewModel) {
-    viewModel.fetchForecastReport(latitude, longitude);
+    viewModel.fetchForecastReport(latitude, longitude).then((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _scrollToCurrentHour(viewModel);
+      });
+    });
     super.onViewModelReady(viewModel);
+  }
+
+  void _scrollToCurrentHour(ForecastReportViewModel viewModel) {
+    DateTime now = DateTime.now();
+    int currentIndex = viewModel.hourlyData?.time.indexWhere((time) {
+          DateTime forecastTime = DateTime.parse(time);
+          return forecastTime.hour == now.hour;
+        }) ??
+        0;
+
+    double screenWidth = WidgetsBinding
+            .instance.platformDispatcher.views.first.display.size.width /
+        WidgetsBinding
+            .instance.platformDispatcher.views.first.display.devicePixelRatio;
+    double itemWidth = 100;
+    double scrollPosition = currentIndex * itemWidth;
+    double centeredPosition =
+        scrollPosition - (screenWidth / 2) + (itemWidth / 1.5);
+
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(
+        centeredPosition,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeInOut,
+      );
+    }
   }
 
   @override
@@ -99,6 +131,7 @@ class ForecastReportView extends StackedView<ForecastReportViewModel> {
                     SizedBox(
                       height: MediaQuery.sizeOf(context).height * 0.172,
                       child: ListView.builder(
+                        controller: _scrollController,
                         scrollDirection: Axis.horizontal,
                         itemCount: viewModel.hourlyData?.time.length ?? 0,
                         itemBuilder: (context, index) {
@@ -112,7 +145,7 @@ class ForecastReportView extends StackedView<ForecastReportViewModel> {
 
                           return Padding(
                             padding:
-                                const EdgeInsets.symmetric(horizontal: 2.0),
+                                const EdgeInsets.symmetric(horizontal: 0.0),
                             child: Container(
                               width: 100,
                               decoration: BoxDecoration(
